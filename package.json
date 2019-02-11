@@ -1,12 +1,12 @@
 {
-  "name": "webpack-typescript",
+  "name": "drone-g",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "start": "node dist/server/index.js",
     "start-client-dev": "webpack-serve",
-    "start-back-dev": "ts-node src/server/index.ts",
+    "start-server-dev": "ts-node src/server/index.ts",
     "build": "npm run build-client && npm run build-server",
     "build-client": "webpack --mode production",
     "build-server": "tsc"

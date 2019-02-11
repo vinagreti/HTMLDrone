@@ -1,21 +1,10 @@
 
-# webpack-typescript
+# drone-g
 
-Install with `yarn`
+Install with `npm i`
 
-Start with `yarn start` 
+Start client with `npm run start-client-dev` 
 
-Production Build with `yarn build`
+Start server with `npm run start-server-dev` 
 
-
-## Webpack 4
-
-- ts-loader (accepts .ts and .tsx)
-- html-webpack-plugin creates a index.html
-- sourcemaps enabled
-
-## Sane defaults
-
-- default tsconfig
-- default tslint (with one override for single quote quotemark)
-
+Production Build with `npm build`
