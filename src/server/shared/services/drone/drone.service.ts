@@ -16,7 +16,7 @@ export class DroneService {
 
   list(): Observable<DroneG[]> {
 
-    return timer(1, 30e3).pipe( // simulates a continuos info update
+    return timer(1, 3e3).pipe( // simulates a continuos info update
 
       switchMap(a => {
 

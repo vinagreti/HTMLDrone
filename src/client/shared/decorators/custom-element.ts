@@ -1,9 +1,4 @@
-export interface CustomElementConfig {
-  selector: string;
-  template: string;
-  style?: string;
-  useShadow?: boolean;
-}
+
 
 const validateSelector = (selector: string) => {
 
@@ -40,7 +35,8 @@ const injectStyle = (template: string, style: string) => {
 const connectCallback = (
   template: HTMLTemplateElement,
   config: CustomElementConfig,
-  connectedCallback: Function
+  connectedCallback: Function,
+  customElementOnInit: Function,
 ) => {
 
   return function (this: any) {
@@ -59,8 +55,17 @@ const connectCallback = (
 
     connectedCallback.call(this);
 
+    customElementOnInit.call(this);
+
   };
 
+}
+
+export interface CustomElementConfig {
+  selector: string;
+  template: string;
+  style?: string;
+  useShadow?: boolean;
 }
 
 export const CustomElement = (config: CustomElementConfig) => (componentClassRef: Function) => {
@@ -69,14 +74,22 @@ export const CustomElement = (config: CustomElementConfig) => (componentClassRef
 
   const connectedCallback = componentClassRef.prototype.connectedCallback || function () { };
 
+  const customElementOnInit = componentClassRef.prototype.customElementOnInit || function () { };
+
   validateSelector(config.selector);
 
   validateTemplate(config.template);
 
   template.innerHTML = injectStyle(config.template, config.style || '');
 
-  componentClassRef.prototype.connectedCallback = connectCallback(template, config, connectedCallback);
+  componentClassRef.prototype.connectedCallback = connectCallback(template, config, connectedCallback, customElementOnInit);
 
   window.customElements.define(config.selector, componentClassRef);
 
 };
+
+export interface CustomElementOnInit {
+
+  customElementOnInit: Function;
+
+}

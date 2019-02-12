@@ -1,7 +1,7 @@
 import { template } from './drone.template';
 import { style } from './drone.style';
 
-import { CustomElement } from './../../../shared/decorators/custom-element';
+import { CustomElement, CustomElementOnInit } from './../../../shared/decorators/custom-element';
 import { Drone } from './../../../../commons/models/drone.model';
 
 @CustomElement({
@@ -10,26 +10,7 @@ import { Drone } from './../../../../commons/models/drone.model';
   style,
   useShadow: true
 })
-export class HTMLDrone extends HTMLElement implements Drone {
-
-  private _quadrant!: string;
-
-  private _positionX!: number;
-
-  private _positionY!: number;
-
-  private loaded = false;
-
-  constructor() {
-    super();
-  }
-
-  connectCallback() {
-    console.log('loaded');
-    this.loaded = true;
-    this.refreshElementPositionX();
-    this.refreshElementPositionY();
-  }
+export class HTMLDrone extends HTMLElement implements Drone, CustomElementOnInit {
 
   get quadrant() { return this._quadrant; }
   set quadrant(v) {
@@ -66,6 +47,24 @@ export class HTMLDrone extends HTMLElement implements Drone {
 
     }
 
+  }
+
+  private _quadrant!: string;
+
+  private _positionX!: number;
+
+  private _positionY!: number;
+
+  private loaded = false;
+
+  constructor() {
+    super();
+  }
+
+  customElementOnInit() {
+    this.loaded = true;
+    this.refreshElementPositionX();
+    this.refreshElementPositionY();
   }
 
   patchValue(value: any = {}) {
