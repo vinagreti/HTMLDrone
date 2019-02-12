@@ -5,7 +5,7 @@ export class DroneG extends Drone {
 
   id!: string;
 
-  quadrant!: number;
+  quadrant!: string;
 
   positionX!: number;
 

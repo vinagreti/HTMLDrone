@@ -1,113 +1,40 @@
-import { WebSocketService } from './shared/services/web-socket-rx/web-socket-rx.service';
-import { HTMLDrone } from './shared/components/drone/drone';
-import { HTMLQuadrantViewer } from './shared/components/quadrant/quadrant';
-import { DroneG } from '../server/shared/componens/drone/drone';
+import { DronesMapPage } from './pages/drones-map/drones-map';
 
-const appDiv: HTMLElement = document.getElementById('main-app') as HTMLElement;
+class MainApp {
 
-const quadrant1 = new HTMLQuadrantViewer();
+  get page() { return this._page; }
+  set page(v: any) {
+    this._page = v;
+  }
 
-appDiv.appendChild(quadrant1);
+  private appContainerElement!: HTMLElement;
 
-class mainApp {
-
-  private wsServer!: WebSocketService;
-
-  private drones: HTMLDrone[] = [];
+  private _page!: any;
 
   constructor() {
-    console.log('Main app working!');
-    this.initWsService();
-    this.establishWsConnection();
-  }
 
-  initWsService() {
-    this.wsServer = new WebSocketService();
-  }
+    console.log('Main app started!');
 
-  establishWsConnection() {
-    this.wsServer.connect('ws://localhost:2019/position')
-    .subscribe(
-      (drones: any[]) => {
+    this.findAppContainer();
 
-        this.updateQuadrantDronesData(drones);
-
-        this.updateQuadrantDrones();
-
-      }, (err: any) => {
-
-        console.error('err', err);
-
-      },
-
-    )
+    this.initDronesMap();
 
   }
 
-  private updateQuadrantDrones() {
+  private findAppContainer() {
 
-    quadrant1.clear();
-
-    this.drones.forEach((drone: HTMLDrone) => {
-
-      quadrant1.appendDrone(drone);
-
-    });
+    this.appContainerElement = document.getElementById('main-app') as HTMLElement;
 
   }
 
-  private updateQuadrantDronesData(arrivedDrones: DroneG[] = []) {
+  private initDronesMap() {
 
-    const arrivedDronesIds = arrivedDrones.map(drone => drone.id);
-
-    const listWithoutRemovedDrones = this.drones.filter(drone => arrivedDronesIds.includes(drone.id));
-
-    const listWithoutRemovedDronesIds = listWithoutRemovedDrones.map(drone => drone.id);
-
-    const listWithoutRemovedDronesUpdated = listWithoutRemovedDrones.map(drone => {
-
-      const newDroneData = arrivedDrones.find(arrivedDrone => arrivedDrone.id === drone.id);
-
-      this.configDrone(drone, newDroneData);
-
-      return drone;
-
-    });
-
-    const newDronesList = arrivedDrones.filter(drone => !listWithoutRemovedDronesIds.includes(drone.id)).map(drone => this.createAndConfigureHTMLDrone(drone));
-
-    const newDronesconfiguration = [
-      ...listWithoutRemovedDronesUpdated,
-      ...newDronesList,
-    ];
-
-    this.drones = newDronesconfiguration;
-
-
-  }
-
-  private createAndConfigureHTMLDrone = (data: any = {}) => {
-
-    const newDrone = new HTMLDrone();
-
-    this.configDrone(newDrone, data);
-
-    return newDrone;
-
-  }
-
-  private configDrone = (drone: HTMLDrone, data: any = {}) => {
-
-    drone.id = data.id;
-
-    drone.quadrant = data.quadrant;
-
-    drone.positionX = data.positionX;
-
-    drone.positionY = data.positionY;
+    this.page = new DronesMapPage(this.appContainerElement);
 
   }
 
 }
 
-new mainApp();
+(() => {
+  new MainApp();
+})();

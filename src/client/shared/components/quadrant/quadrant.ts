@@ -1,6 +1,7 @@
 import { CustomElement } from './../../decorators/custom-element';
 import { template } from './quadrant.template';
 import { style } from './quadrant.style';
+import { Quadrant } from './../../../../commons/models/quadrant.model';
 import { HTMLDrone } from './../drone/drone';
 
 @CustomElement({
@@ -9,21 +10,67 @@ import { HTMLDrone } from './../drone/drone';
   style,
   useShadow: true
 })
-export class HTMLQuadrantViewer extends HTMLElement {
+export class HTMLQuadrantViewer extends HTMLElement implements Quadrant {
 
-  public appendDrone(drone: HTMLDrone) {
+  get drones(): HTMLDrone[] { return this._drones; }
+  set drones(v: HTMLDrone[]) {
 
-    if (this.shadowRoot) {
+    if (v !== this._drones) {
 
-      const quadrantWrapper = this.shadowRoot.getElementById('quadrant-wrapper');
+      this.refreshDronesData(v);
 
-      quadrantWrapper && quadrantWrapper.appendChild(drone);
+      this.updateVisibleDronesData();
 
     }
 
   }
 
-  public clear() {
+  private _drones: HTMLDrone[] = [];
+
+  private refreshDronesData(arrivedDrones: HTMLDrone[]) {
+
+    const arrivedDronesIds = arrivedDrones.map(drone => drone.id);
+
+    const localListWithoutRemovedDrones = this.drones.filter(drone => arrivedDronesIds.includes(drone.id));
+
+    const localListWithoutRemovedDronesIds = localListWithoutRemovedDrones.map(drone => drone.id);
+
+    const localListWithoutRemovedDronesUpdated = localListWithoutRemovedDrones.map(drone => {
+
+      const newDroneData = arrivedDrones.find(arrivedDrone => arrivedDrone.id === drone.id);
+
+      drone.patchValue(newDroneData);
+
+      return drone;
+
+    });
+
+    const arrivedDronesWithoutDuplicated = arrivedDrones
+      .filter(drone => !localListWithoutRemovedDronesIds.includes(drone.id))
+      .map(drone => (new HTMLDrone()).patchValue(drone));
+
+    const newDronesList = [
+      ...localListWithoutRemovedDronesUpdated,
+      ...arrivedDronesWithoutDuplicated,
+    ];
+
+    this._drones = newDronesList;
+
+  }
+
+  private updateVisibleDronesData() {
+
+    this.clear();
+
+    this.drones.forEach((drone: HTMLDrone) => {
+
+      this.appendDrone(drone);
+
+    });
+
+  }
+
+  private clear() {
 
     if (this.shadowRoot) {
 
@@ -36,6 +83,18 @@ export class HTMLQuadrantViewer extends HTMLElement {
       }
 
     }
+  }
+
+  public appendDrone(drone: HTMLDrone) {
+
+    if (this.shadowRoot) {
+
+      const quadrantWrapper = this.shadowRoot.getElementById('quadrant-wrapper');
+
+      quadrantWrapper && quadrantWrapper.appendChild(drone);
+
+    }
+
   }
 
 }

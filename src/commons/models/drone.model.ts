@@ -4,7 +4,7 @@ import { randomFromZero } from './../helpers/random/random';
 // (values sent as strings, but must be treated as floating point number)
 export class Drone {
   id: string;
-  quadrant: number;
+  quadrant: string;
   positionX: number;
   positionY: number;
 

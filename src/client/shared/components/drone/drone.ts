@@ -12,63 +12,95 @@ import { Drone } from './../../../../commons/models/drone.model';
 })
 export class HTMLDrone extends HTMLElement implements Drone {
 
-  private _id!: string;
-
-  private _quadrant!: number;
+  private _quadrant!: string;
 
   private _positionX!: number;
 
   private _positionY!: number;
 
+  private loaded = false;
+
   constructor() {
     super();
   }
 
-  get id() { return this._id; }
-  set id(position) {
-    if (this._id !== position) {
-      this._id = position;
-    }
+  connectCallback() {
+    console.log('loaded');
+    this.loaded = true;
+    this.refreshElementPositionX();
+    this.refreshElementPositionY();
   }
 
   get quadrant() { return this._quadrant; }
-  set quadrant(position) {
-    if (this._quadrant !== position) {
-      this._quadrant = position;
+  set quadrant(v) {
+
+    if (this._quadrant !== v) {
+
+      this._quadrant = v;
+
     }
+
   }
 
   get positionX() { return this._positionX; }
-  set positionX(position) {
+  set positionX(v) {
 
-    if (this._positionX !== position) {
+    if (this._positionX !== v) {
 
-      this._positionX = position;
+      this._positionX = v;
 
-      setTimeout(() => {
-        if (this.shadowRoot && position >= 0) {
-          const droneWrapper = this.shadowRoot.getElementById('drone-wrapper');
-          droneWrapper && (droneWrapper.style.left = `${position / 10}%`);
-        }
-      }, 0);
+      this.refreshElementPositionX();
 
     }
 
   }
 
   get positionY() { return this._positionY; }
-  set positionY(position) {
+  set positionY(v) {
 
-    if (this._positionY !== position) {
+    if (this._positionY !== v) {
 
-      this._positionY = position;
+      this._positionY = v;
 
-      setTimeout(() => {
-        if (this.shadowRoot && position >= 0) {
-          const droneWrapper = this.shadowRoot.getElementById('drone-wrapper');
-          droneWrapper && (droneWrapper.style.top = `${position / 10}%`);
-        }
-      }, 0);
+      this.refreshElementPositionY();
+
+    }
+
+  }
+
+  patchValue(value: any = {}) {
+
+    this.id = value.id;
+
+    this.quadrant = value.quadrant;
+
+    this.positionX = value.positionX;
+
+    this.positionY = value.positionY;
+
+    return this;
+
+  }
+
+  private refreshElementPositionX() {
+
+    this.setStyle('left', `${this._positionX / 10}%`);
+
+  }
+
+  private refreshElementPositionY() {
+
+    this.setStyle('top', `${this._positionY / 10}%`);
+
+  }
+
+  private setStyle(prop: any, value: any) {
+
+    if (this.loaded && this.shadowRoot) {
+
+      const droneWrapper = this.shadowRoot.getElementById('drone-wrapper');
+
+      droneWrapper && (droneWrapper.style[prop] = value);
 
     }
 

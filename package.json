@@ -9,7 +9,8 @@
     "start-server-dev": "ts-node src/server/index.ts",
     "build": "npm run build-client && npm run build-server",
     "build-client": "webpack --mode production",
-    "build-server": "tsc"
+    "build-server": "tsc",
+    "build-start": "npm run build && npm start"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
