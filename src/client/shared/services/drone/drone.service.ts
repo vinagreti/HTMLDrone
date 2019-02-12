@@ -11,7 +11,7 @@ export class DroneService {
 
   constructor() {
 
-    console.log('Drone service started!');
+    console.log('DroneService:: STARTED');
 
     this.initWsService();
 

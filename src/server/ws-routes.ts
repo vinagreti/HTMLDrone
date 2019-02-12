@@ -28,13 +28,13 @@ export class WsRoutes {
 
       const operation$ = CONNECTIONS[wsRoutes.dronePosition] || this.droneService.list();
 
-      this.registerClient(ws, operation$);
+      this.registerWsClientCallback(ws, operation$);
 
     });
 
   }
 
-  private registerClient(ws: any, operation$: Observable<any>) {
+  private registerWsClientCallback(ws: any, operation$: Observable<any>) {
 
     operation$.subscribe(res => {
 

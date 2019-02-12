@@ -12,7 +12,7 @@ export class DronesMapPage {
     private outlet: HTMLElement
   ) {
 
-    console.log('Drones map started!');
+    console.log('DronesMap:: STARTED!');
 
     this.initQuadrants();
 
@@ -51,16 +51,15 @@ export class DronesMapPage {
   private connectToDronesStream(quadrantId: string) {
 
     this.dronesService.drones(quadrantId)
-      .subscribe(
-        (drones: HTMLDrone[]) => {
+      .subscribe((drones: HTMLDrone[]) => {
 
-          this.quadrants[quadrantId].drones = drones;
+        this.quadrants[quadrantId].drones = drones;
 
-        }, err => {
+      }, err => {
 
-          console.error('err', err);
+        console.error('err', err);
 
-        });
+      });
 
   }
 

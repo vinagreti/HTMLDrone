@@ -67,7 +67,7 @@ export class MainServer {
   }
 
   private logServerStatus() {
-    console.log(`Example app listening on ${environment.name} env at port ${this.port}`);
+    console.log(`Server listening on ${environment.name} env at port ${this.port}`);
   }
 
 }

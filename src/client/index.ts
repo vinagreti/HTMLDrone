@@ -13,7 +13,7 @@ class MainApp {
 
   constructor() {
 
-    console.log('Main app started!');
+    console.log('MainApp:: STARTED!');
 
     this.findAppContainer();
 
