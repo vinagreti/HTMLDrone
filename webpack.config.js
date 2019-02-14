@@ -5,6 +5,7 @@ module.exports = {
   entry: './src/client/index.ts',
   devtool: 'inline-source-map',
   mode: 'production',
+  node: { fs: "empty" },
   module: {
     rules: [
       {
