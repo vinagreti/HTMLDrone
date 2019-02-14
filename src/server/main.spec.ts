@@ -14,7 +14,7 @@ describe('MainServer', () => {
     serverInstance.server.close();
     setTimeout(() => {
       done();
-    }, 0);
+    }, 0); // waits for the server to closes before goes to next file
   });
 
   it(`should create express app`, () => {

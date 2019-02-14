@@ -19,7 +19,7 @@ describe('Static Routes', () => {
     serverInstance.server.close();
     setTimeout(() => {
       done();
-    }, 0);
+    }, 0); // waits for the server to closes before goes to next file
   });
 
   it('it should return the document in the root path', (done) => {

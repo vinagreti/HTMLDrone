@@ -17,20 +17,13 @@ describe('WS Routes', () => {
 
     socket = new WebSocket(socketUrl);
 
-    socket.onerror = (err: any) => {
-      console.log('WS error', err);
-      done();
-    };
-
-    socket.onclose = () => {
+    socket.onclose = () => { // make sure the test continues
       console.log('WS closed');
       done();
     };
 
     socket.onopen = () => {
-      setTimeout(() => {
-        done();
-      }, 500);
+      done();
     };
 
   });
@@ -39,7 +32,7 @@ describe('WS Routes', () => {
     serverInstance.server.close();
     setTimeout(() => {
       done();
-    }, 0);
+    }, 0); // waits for the server to closes before goes to next file
   });
 
   it('should return drones array', (done) => {
