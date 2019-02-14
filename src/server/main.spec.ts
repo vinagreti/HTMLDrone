@@ -2,10 +2,20 @@ import { MainServer } from './main';
 import { environment } from './environments/environments';
 import { expect } from 'chai';
 
+let serverInstance: MainServer;
 
 describe('MainServer', () => {
 
-  const serverInstance: MainServer = new MainServer();
+  before(() => {
+    serverInstance = new MainServer();
+  })
+
+  after((done) => {
+    serverInstance.server.close();
+    setTimeout(() => {
+      done();
+    }, 0);
+  });
 
   it(`should create express app`, () => {
     expect(!!serverInstance.app).to.equal(true);

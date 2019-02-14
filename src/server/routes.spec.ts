@@ -4,9 +4,23 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
+let serverInstance: MainServer;
+
 describe('Static Routes', () => {
 
-  const serverInstance: MainServer = new MainServer();
+  before((done) => {
+    serverInstance = new MainServer();
+    setTimeout(() => {
+      done();
+    }, 0);
+  })
+
+  after((done) => {
+    serverInstance.server.close();
+    setTimeout(() => {
+      done();
+    }, 0);
+  });
 
   it('it should return the document in the root path', (done) => {
 

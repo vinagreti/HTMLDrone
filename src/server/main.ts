@@ -9,24 +9,22 @@ import { MainRoutes } from './routes';
 import { environment } from './environments/environments';
 import { WsRoutes } from './ws-routes';
 
-let mainServerInstance: Server;
-
 export class MainServer {
 
   get app() { return this._app; }
 
   get port() { return this._port; }
 
-  get server() { return mainServerInstance; }
-  set server(v: Server) {
-    mainServerInstance = v;
-  }
-
   get routes() { return this._routes; }
 
   get webSocket() { return this._webSocket; }
 
   get webSocketRoutes() { return this._webSocketRoutes; }
+
+  get server() { return this._server; }
+  set server(v: Server) {
+    this._server = v;
+  }
 
   private _app!: core.Express;
 
@@ -38,7 +36,13 @@ export class MainServer {
 
   private _webSocketRoutes!: WsRoutes;
 
+  private _server!: Server;
+
   constructor() {
+    this.startServer();
+  }
+
+  private startServer() {
     this.createApp();
     this.enableCompression();
     this.initWebsocket();
@@ -53,6 +57,7 @@ export class MainServer {
 
   private initWebsocket() {
     this._webSocket = expressWs(this.app);
+
   }
 
   private enableCompression() {
@@ -66,17 +71,9 @@ export class MainServer {
   }
 
   private initServer() {
-    if (this.server) {
-
-      return this.server;
-
-    } else {
-
-      return this.server = this.app.listen(environment.port, () => {
-        this.logServerStatus();
-      });
-
-    }
+    return this.server = this.app.listen(environment.port, () => {
+      this.logServerStatus();
+    });
   }
 
   private detectRunningPort() {

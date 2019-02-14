@@ -1,22 +1,25 @@
 import { MainServer } from './main';
 import { expect } from 'chai';
 
-var WebSocket = require('ws');
+const WebSocket = require('ws');
 
-const serverInstance: MainServer = new MainServer();
+let serverInstance: MainServer;
+let socketUrl: string;
+let socket: WebSocket;
 
-const socketUrl = `ws://localhost:${serverInstance.port}/position`;
+describe('WS Routes', () => {
 
-describe('WS Routes', function () {
+  before((done) => {
 
-  let socket: any;
+    serverInstance = new MainServer();
 
-  beforeEach((done) => {
+    socketUrl = `ws://localhost:${serverInstance.port}/position`;
 
     socket = new WebSocket(socketUrl);
 
     socket.onerror = (err: any) => {
       console.log('WS error', err);
+      done();
     };
 
     socket.onclose = () => {
@@ -25,9 +28,18 @@ describe('WS Routes', function () {
     };
 
     socket.onopen = () => {
-      done();
+      setTimeout(() => {
+        done();
+      }, 500);
     };
 
+  });
+
+  after((done) => {
+    serverInstance.server.close();
+    setTimeout(() => {
+      done();
+    }, 0);
   });
 
   it('should return drones array', (done) => {
