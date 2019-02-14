@@ -1,8 +1,11 @@
 import { MainServer } from './main';
 import { expect } from 'chai';
-const io = require('socket.io-client')
+
+var WebSocket = require('ws');
+
 const serverInstance: MainServer = new MainServer();
-const socketUrl = `http://localhost:${serverInstance.port}`;
+
+const socketUrl = `ws://localhost:${serverInstance.port}/position`;
 
 describe('WS Routes', function () {
 
@@ -10,49 +13,29 @@ describe('WS Routes', function () {
 
   beforeEach((done) => {
 
-    socket = io.connect(socketUrl, {
-      reconnectionDelay: 0,
-      reopenDelay: 0,
-      forceNew: true,
-      transports: ['websocket'],
-      path: '/position'
-    });
+    socket = new WebSocket(socketUrl);
 
-    console.log('socket', socket.connected);
+    socket.onerror = (err: any) => {
+      console.log('WS error', err);
+    };
 
-    socket.on('connect_error', (err: any) => {
-      console.log('connect_error...', err);
+    socket.onclose = () => {
+      console.log('WS closed');
       done();
-    });
+    };
 
-    socket.on('error', (err: any) => {
-      console.log('error...', err);
+    socket.onopen = () => {
       done();
-    });
-
-    socket.on('connect', () => {
-      console.log('worked...');
-      done();
-    });
-
-    socket.on('disconnect', () => {
-      console.log('disconnected...');
-      done();
-    });
-
-    socket.on('message', () => {
-      console.log('messageed...');
-      done();
-    });
+    };
 
   });
 
   it('should return drones array', (done) => {
-
-    console.log('3', socket.connected);
-
-    expect(true).to.be.eql(true);
-    done();
+    socket.onmessage = (message: any) => {
+      const messageData = JSON.parse(message.data || '');
+      expect(messageData).to.be.a('array');
+      done();
+    };
   });
 
 });

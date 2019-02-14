@@ -26,8 +26,6 @@ export class WsRoutes {
 
     this.server.app.ws(wsRoutes.dronePosition, (ws, req) => {
 
-      console.log('chamou aqui');
-
       const operation$ = CONNECTIONS[wsRoutes.dronePosition] || this.droneService.list();
 
       this.registerWsClientCallback(ws, operation$);
