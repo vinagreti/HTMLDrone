@@ -1,6 +1,8 @@
 import { Drone } from "./../../models/drone.model";
 import { randomFromZero, chooseOneRandomly } from "./random";
 
+const stpesize = 3;
+
 const directions: any = {};
 
 export const randomDroneMovement = (drone: Drone) => {
@@ -22,7 +24,7 @@ export const randomDroneMovement = (drone: Drone) => {
 
   if (currentDroneDirection === 'front') {
 
-    const possibleNextPositionForward = currentCoordValue + 1;
+    const possibleNextPositionForward = currentCoordValue + stpesize;
 
     if (possibleNextPositionForward < 900) {
 
@@ -38,7 +40,7 @@ export const randomDroneMovement = (drone: Drone) => {
 
   } else {
 
-    const possibleNextPositionBackward = currentCoordValue - 1;
+    const possibleNextPositionBackward = currentCoordValue - stpesize;
 
     if (possibleNextPositionBackward > 100) {
 

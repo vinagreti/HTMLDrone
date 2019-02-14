@@ -4,18 +4,18 @@ const HTMLPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: './src/client/index.ts',
   devtool: 'inline-source-map',
-  mode: 'development',
+  mode: 'production',
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: [/node_modules/]
-      }
+      },
     ]
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ]
+    extensions: ['.tsx', '.ts', '.js']
   },
   output: {
     filename: 'index.js',
@@ -23,7 +23,11 @@ module.exports = {
   },
   plugins: [
     new HTMLPlugin({
-      template: './src/client/index.html'
+      template: './src/client/index.html',
+      minify: true,
+      hash: true,
+      cache: true,
     })
   ]
 };
+

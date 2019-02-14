@@ -18,6 +18,11 @@ export class MainRoutes {
       res.sendFile(path.join(__dirname + '/../client/index.html'));
     });
 
+    this.app.get('/*', (req, res) => {
+      res.status(404);
+      res.send('no content');
+    });
+
   }
 
 }

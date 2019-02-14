@@ -4,20 +4,24 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node dist/server/index.js",
-    "start-client-dev": "webpack-serve",
-    "start-server-dev": "ts-node-dev src/server/index.ts",
     "build": "npm run build-client && npm run build-server",
     "build-client": "webpack --mode production",
     "build-server": "tsc",
-    "build-start": "npm run build && npm start"
+    "build-start": "npm run build && npm start",
+    "start": "node dist/server/index.js",
+    "start-client": "webpack-serve",
+    "start-server": "ts-node-dev src/server/index.ts",
+    "test": "npm run build-client && npm run test-back-only",
+    "test-back-only": "mocha --exit --require ts-node/register ./src/server/*.spec.ts"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/express": "^4.16.1",
     "@types/express-ws": "^3.0.0",
     "@types/mocha": "^5.2.5",
+    "@webcomponents/webcomponentsjs": "^2.2.7",
     "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
     "html-webpack-plugin": "^3.2.0",
     "mocha": "^5.2.0",
     "ts-loader": "^5.3.3",
@@ -28,8 +32,10 @@
     "webpack-serve": "^2.0.3"
   },
   "dependencies": {
+    "compression": "^1.7.3",
     "express": "^4.16.4",
     "express-ws": "^4.0.0",
-    "rxjs": "^6.4.0"
+    "rxjs": "^6.4.0",
+    "socket.io-client": "^2.2.0"
   }
 }

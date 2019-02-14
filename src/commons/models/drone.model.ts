@@ -3,10 +3,10 @@ import { randomFromZero } from './../helpers/random/random';
 // x, y are coords
 // (values sent as strings, but must be treated as floating point number)
 export class Drone {
-  id: string;
-  quadrant: string;
-  positionX: number;
-  positionY: number;
+  public id: string;
+  public quadrant: string;
+  public positionX: number;
+  public positionY: number;
 
   constructor(data: any = {}) {
     this.id = data.id;

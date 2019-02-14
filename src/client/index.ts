@@ -1,3 +1,4 @@
+import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js';
 import { DronesMapPage } from './pages/drones-map/drones-map';
 
 class MainApp {

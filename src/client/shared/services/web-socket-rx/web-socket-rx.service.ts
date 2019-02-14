@@ -1,4 +1,5 @@
 import { Subject } from "rxjs";
+import { distinct, distinctUntilChanged, map, debounceTime } from 'rxjs/operators';
 
 const reconnectionTimeout = 30e3;
 
@@ -17,12 +18,7 @@ export class WebSocketService {
     newWsConnection.onopen = (w) => {
 
       newWsConnection.onmessage = (message) => {
-        try {
-          const parsedData = JSON.parse(message.data);
-          stream.next(parsedData);
-        } catch (error) {
-          stream.next(message);
-        }
+        stream.next(message.data);
       };
 
       newWsConnection.onerror = (message) => {
@@ -41,7 +37,18 @@ export class WebSocketService {
 
     };
 
-    return stream;
+    return stream.pipe(
+      distinctUntilChanged(),
+      debounceTime(10), // avoids overprocessing
+      map((textData: string) => {
+        try {
+          const parsedData = JSON.parse(textData);
+          return parsedData;
+        } catch (error) {
+          return textData;
+        }
+      })
+    );
 
   }
 
