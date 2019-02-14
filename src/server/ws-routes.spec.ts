@@ -23,7 +23,9 @@ describe('WS Routes', () => {
     };
 
     socket.onopen = () => {
-      done();
+      setImmediate(() => { // ensures socket will be ready for testing
+        done();
+      });
     };
 
   });
