@@ -1,7 +1,7 @@
 // Karma configuration
 // Generated on Thu Feb 14 2019 17:19:49 GMT-0200 (BRST)
 
-module.exports = function(config: any) {
+module.exports = (config: any) => {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -10,12 +10,16 @@ module.exports = function(config: any) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: [
+      'jasmine-dom',
+      'jasmine',
+      'karma-typescript',
+    ],
 
 
     // list of files / patterns to load in the browser
     files: [
-      './dist/client/**/*.spec.js',
+      './src/client/**/*.spec.ts',
     ],
 
 
@@ -27,6 +31,7 @@ module.exports = function(config: any) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+      "./src/client/**/*.ts": "karma-typescript"
     },
 
 
@@ -34,8 +39,8 @@ module.exports = function(config: any) {
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: [
-      'progress',
       'karmaHTML',
+      'progress',
     ],
 
     client: {
@@ -65,7 +70,10 @@ module.exports = function(config: any) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: [
+      'ChromeHeadless',
+      'Chrome',
+    ],
 
 
     // Continuous Integration mode
