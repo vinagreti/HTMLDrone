@@ -11,7 +11,6 @@ module.exports = (config: any) => {
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: [
-      'jasmine-dom',
       'jasmine',
       'karma-typescript',
     ],
@@ -19,7 +18,7 @@ module.exports = (config: any) => {
 
     // list of files / patterns to load in the browser
     files: [
-      './src/client/**/*.spec.ts',
+      './**/*.spec.ts',
     ],
 
 
@@ -31,7 +30,7 @@ module.exports = (config: any) => {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      "./src/client/**/*.ts": "karma-typescript"
+      "./**/*.ts": "karma-typescript"
     },
 
 
@@ -46,7 +45,7 @@ module.exports = (config: any) => {
     client: {
       karmaHTML: {
         source: [
-          { src: './dist/client/index.html', tag: 'index' }
+          { src: './index.html', tag: 'index' }
         ]
       }
     },
